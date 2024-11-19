@@ -18,4 +18,32 @@ function primitiveMultiply(a, b) {
 
 function reliableMultiply(a, b) {
   // Your code here.
+  class MultiplicatorUnitFailure extends Error {}
+
+// The primitiveMultiply function is unchanged and provided as part of the starter code.
+
+function reliableMultiply(a, b) {
+  // Begin an infinite loop to repeatedly attempt the multiplication.
+  while (true) {
+    try {
+      // Try to call primitiveMultiply with the given arguments.
+      // If it succeeds, the result is returned and the loop exits.
+      return primitiveMultiply(a, b);
+    } catch (error) {
+      // Check if the error is specifically a MultiplicatorUnitFailure.
+      if (!(error instanceof MultiplicatorUnitFailure)) {
+        // If the error is of a different type, rethrow it.
+        // This ensures unexpected errors are not suppressed.
+        throw error;
+      }
+      // If the error is a MultiplicatorUnitFailure, the loop continues.
+      // No action is taken because we want to retry the multiplication.
+    }
+  }
+}
+
+// Example Output
+// Call reliableMultiply with two numbers, 8 and 8.
+// The function retries until it successfully returns the product.
+console.log(reliableMultiply(8, 8)); // Expected output: 64
 }
